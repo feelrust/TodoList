@@ -58,7 +58,10 @@ namespace TodoList.Services
 
         public async Task<List<User>> GetAll()
         {
-            return await _dbContext.Users.Include(o => o.UserRoles).Include(o => o.Roles).AsNoTracking().ToListAsync();
+            return await _dbContext.Users
+                .Include(o => o.Roles)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task Update(User user)
