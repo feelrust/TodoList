@@ -17,13 +17,19 @@ namespace TodoList.Services
 
             var key = ApiSettings.GenerateSecretByte();
 
+            var claimsIdentity = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, user.Id.ToString())
+            });
+                    
+            foreach (var role in user.Roles)
+            {
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role.Name));
+            }
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-				Subject = new ClaimsIdentity(new Claim[]
-				{
-					new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role!.ToString())
-                }),
+				Subject = claimsIdentity,
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
