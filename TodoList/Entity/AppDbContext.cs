@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoList.Models;
 
 namespace TodoList.Entity
 {
@@ -19,6 +18,7 @@ namespace TodoList.Entity
             .Property(e => e.CreatedDate)
             .HasDefaultValueSql("datetime('now')");
 
+            modelBuilder.Entity<User>().HasData(new User { Id = 1, Username = "admin@gmail.com", Password = "12345", Role = "Admin" });
 
             base.OnModelCreating(modelBuilder);
         }

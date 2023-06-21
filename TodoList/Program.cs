@@ -36,7 +36,10 @@ builder.Services.AddAuthentication(config =>
         ValidateAudience = false
     };
 });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("admin", policy => policy.RequireRole("Admin"));
+});
 builder.Services.AddSwaggerGen();
 
 
@@ -47,11 +50,13 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+//Allowing cors because different fe and be domain
 app.UseCors(builder => builder
 .AllowAnyOrigin()
 .AllowAnyMethod()
 .AllowAnyHeader()
 );
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -63,6 +68,11 @@ app.MapGroup("/tasks/v1")
     .MapTaskApiV1()
     .RequireAuthorization()
     .WithTags("Tasks Endpoints");
+
+app.MapGroup("/admin/user/v1")
+    .MapUserApiV1()
+    .RequireAuthorization("Admin")
+    .WithTags("User Endpoints");
 
 app.Run();
 

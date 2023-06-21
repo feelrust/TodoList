@@ -11,7 +11,7 @@ using TodoList.Entity;
 namespace TodoList.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230619065434_First")]
+    [Migration("20230621064501_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -64,6 +64,9 @@ namespace TodoList.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -71,6 +74,15 @@ namespace TodoList.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "12345",
+                            Role = "Admin",
+                            Username = "admin@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("TodoList.Entity.TaskToDo", b =>

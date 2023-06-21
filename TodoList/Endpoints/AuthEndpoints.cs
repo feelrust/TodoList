@@ -28,6 +28,8 @@ namespace TodoList.Endpoints
 
             //DANI REMEMBER: should be add password hashing logic
 
+            // role when register from fe will always user
+            userModel.Role = "User";
             await userService.Add(userModel);
 
             return TypedResults.Ok(userModel);

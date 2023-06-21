@@ -5,20 +5,12 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Security.Claims;
 using System.Text;
 using TodoList.Entity;
+using Microsoft.AspNetCore.Identity;
 
 namespace TodoList.Services
 {
 	public class TokenService
 	{
-
-		//public string TestHash(string hash)
-		//{
-		//	var x = new PasswordHasher<User>();
-		//	var user = new User() { Username = ",", Password = "," };
-		//	var hashed = x.HashPassword(user, user.Password);
-		//	return hashed;
-		//}
-
 		public string GenerateToken(User user)
 		{
 			JwtSecurityTokenHandler tokenHandler = new();
@@ -30,7 +22,8 @@ namespace TodoList.Services
 				Subject = new ClaimsIdentity(new Claim[]
 				{
 					new Claim(ClaimTypes.Name, user.Id.ToString()),
-				}),
+                    new Claim(ClaimTypes.Role, user.Role!.ToString())
+                }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

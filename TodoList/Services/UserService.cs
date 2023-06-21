@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TodoList.Entity;
 
@@ -10,7 +11,11 @@ namespace TodoList.Services
 
         ValueTask<User?> FindByUserName(string userName);
 
-        Task Add(User todo);
+        Task Add(User user);
+
+        Task<List<User>> GetAll();
+
+        Task Update(User user);
     }
 	public class UserService: IUserService
 	{
@@ -20,9 +25,9 @@ namespace TodoList.Services
             _dbContext = dbContext;
 		}
 
-        public async Task Add(User todo)
+        public async Task Add(User user)
         {
-            await _dbContext.Users.AddAsync(todo);
+            await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -34,6 +39,17 @@ namespace TodoList.Services
         public async ValueTask<User?> FindByUserName(string userName)
         {
             return await _dbContext.Users.SingleAsync(t => t.Username == userName);
+        }
+
+        public async Task<List<User>> GetAll()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
+
+        public async Task Update(User user)
+        {
+            _dbContext.Users.Update(user);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

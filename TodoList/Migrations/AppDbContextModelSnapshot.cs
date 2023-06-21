@@ -61,6 +61,9 @@ namespace TodoList.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -68,6 +71,15 @@ namespace TodoList.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "12345",
+                            Role = "Admin",
+                            Username = "admin@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("TodoList.Entity.TaskToDo", b =>
