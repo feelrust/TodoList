@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using TodoList.Models;
 using TodoList.Entity;
 using TodoList.Services;
+using TodoList.Enums;
 
 namespace TodoList.Endpoints
 {
@@ -16,7 +17,7 @@ namespace TodoList.Endpoints
             return group;
         }
 
-        public static async Task<Results<Ok<User>, BadRequest<Error>>> Register(IValidator<User> validator, User userModel, IUserService userService)
+        public static async Task<Results<Ok<UserResponse>, BadRequest<Error>>> Register(IValidator<User> validator, User userModel, IUserService userService)
         {
             var validationResult = await validator.ValidateAsync(userModel);
 
@@ -27,10 +28,16 @@ namespace TodoList.Endpoints
             }
 
             //DANI REMEMBER: should be add password hashing logic
+            
+            await userService.Add(userModel, (int)RoleName.User);
 
-            await userService.Add(userModel);
+            var response = new UserResponse()
+            {
+                Username = userModel.Username,
+                Roles = new List<string>() { RoleName.User.ToString() }
+            };
 
-            return TypedResults.Ok(userModel);
+            return TypedResults.Ok(response);
 
         }
 
@@ -55,7 +62,11 @@ namespace TodoList.Endpoints
 
             user.Password = string.Empty;
 
-            return TypedResults.Ok(new LoginResponse(user.Username, token));
+            return TypedResults.Ok(
+                new LoginResponse(user.Username,
+                token,
+                user.Roles.Select(o => o.Name)
+                ));
 
         }
 

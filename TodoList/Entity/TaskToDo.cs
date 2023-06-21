@@ -10,7 +10,7 @@ namespace TodoList.Entity
         public DateTime? CompleteDate { get; set; }
         public int UserId { get; set; }
         public DateTime CreatedDate { get; set; }
-        public User CreatedBy { get; set; }
+        public User? CreatedBy { get; set; }
 
     }
 }

@@ -29,6 +29,7 @@
     <None Remove="Settings\" />
     <None Remove="Entity\" />
     <None Remove="Endpoints\" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -37,5 +38,6 @@
     <Folder Include="Settings\" />
     <Folder Include="Entity\" />
     <Folder Include="Endpoints\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>
